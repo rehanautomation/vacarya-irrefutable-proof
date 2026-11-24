@@ -1,0 +1,319 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Vacarya · Monthly cashflow</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{min-height:100vh;background:linear-gradient(150deg,#0B2436 0%,#0E3247 55%,#0B2436 100%);color:#fff;font-family:Inter,system-ui,sans-serif;font-weight:300;-webkit-font-smoothing:antialiased;padding:4vh 4vw}
+.wrap{max-width:1340px;margin:0 auto}
+.hd{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid #3E6E8C;padding-bottom:14px;margin-bottom:14px}
+h1{font-family:Fraunces,Georgia,serif;font-weight:300;font-size:clamp(22px,2.5vw,32px);letter-spacing:-.01em}
+.mark{font-family:Inter,sans-serif;font-weight:400;letter-spacing:.06em;font-size:clamp(18px,1.9vw,26px)}
+.method{font-size:clamp(11px,.95vw,13px);color:#B7D0DF;line-height:1.7;margin-bottom:26px}
+.method b{font-weight:400;color:#fff}
+.lbl{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:#8FB4C9;margin-bottom:9px}
+.lbl b{font-weight:500;color:#fff}
+.bands,.sc{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:#3E6E8C;border:1px solid #3E6E8C}
+.b{background:#0C2B3E;padding:22px}
+.b .t{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:#8FB4C9;margin-bottom:10px}
+.b .n{font-size:clamp(34px,4vw,50px);font-weight:300;letter-spacing:-.04em;line-height:.9;font-variant-numeric:tabular-nums}
+.b .pm{font-size:11.5px;color:#B7D0DF;margin-top:7px}
+.b .q{font-size:10px;color:#7FA5BC;margin-top:10px;border-top:1px solid #24506B;padding-top:8px}
+.s{background:#0A2434;padding:18px 22px}
+.s .u{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#B7D0DF}
+.s .n{font-size:clamp(24px,2.6vw,32px);font-weight:300;letter-spacing:-.03em;line-height:1;margin-top:7px;color:#C9A961;font-variant-numeric:tabular-nums}
+.s .f{font-size:10px;color:#7FA5BC;margin-top:6px}
+.ex{display:grid;grid-template-columns:repeat(6,1fr);gap:1px;background:#3E6E8C;border:1px solid #3E6E8C}
+.e{background:#0C2B3E;padding:16px 12px;display:block;text-decoration:none;color:inherit;transition:background .15s}
+.e:hover{background:#123449}
+.e .nm{font-size:9px;letter-spacing:.09em;text-transform:uppercase;color:#B7D0DF;line-height:1.5;height:25px}
+.e .a{font-size:clamp(19px,2vw,25px);font-weight:300;letter-spacing:-.03em;line-height:1;margin-top:6px;font-variant-numeric:tabular-nums}
+.e .pm{font-size:9px;color:#7FA5BC;margin-top:3px}
+.e .tag{display:inline-block;font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:#C9A961;border:1px solid #56514A;padding:2px 6px;margin-top:9px}
+.e .go{display:inline-flex;align-items:center;gap:4px;margin-top:9px;font-size:9.5px;color:#fff;border-bottom:1px solid #fff;padding-bottom:2px}
+.e .go svg{width:7px;height:7px}
+
+.calc{margin-top:30px;border:1px solid #C9A961;background:rgba(201,169,97,.05);padding:26px 28px;display:grid;grid-template-columns:minmax(0,1fr) minmax(300px,.85fr);gap:34px;align-items:center}
+.calc .q{font-size:13px;color:#B7D0DF;margin-bottom:13px}
+.row{display:flex;align-items:center;gap:10px;margin-bottom:20px;flex-wrap:wrap}
+.step{width:46px;height:46px;background:transparent;border:1px solid #3E6E8C;color:#fff;font-size:23px;font-weight:300;cursor:pointer;line-height:1;transition:.15s}
+.step:hover{border-color:#fff;background:rgba(255,255,255,.07)}
+.step:focus-visible{outline:2px solid #fff;outline-offset:3px}
+#u{width:100px;height:46px;background:rgba(255,255,255,.08);border:1px solid #3E6E8C;color:#fff;font-family:inherit;font-size:26px;font-weight:300;text-align:center;font-variant-numeric:tabular-nums;-moz-appearance:textfield}
+#u::-webkit-outer-spin-button,#u::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+#u:focus{outline:none;border-color:#fff}
+.ul{font-size:13px;color:#B7D0DF}
+.pills{display:flex;gap:1px;background:#3E6E8C;border:1px solid #3E6E8C}
+.pill{flex:1;background:#0C2B3E;border:none;color:#8FB4C9;font-family:inherit;font-weight:300;font-size:12px;letter-spacing:.1em;text-transform:uppercase;padding:15px 8px;cursor:pointer;transition:.15s}
+.pill:hover{background:#123449;color:#fff}
+.pill[aria-pressed=true]{background:#C9A961;color:#0B2436;font-weight:400}
+.pill:focus-visible{outline:2px solid #fff;outline-offset:-4px}
+.out{text-align:center;border-left:1px solid #24506B;padding-left:34px}
+.big{font-size:clamp(48px,7vw,88px);font-weight:300;letter-spacing:-.045em;line-height:.88;color:#C9A961;font-variant-numeric:tabular-nums}
+.out .pm{font-size:14px;color:#B7D0DF;margin-top:12px}
+.det{font-size:11px;color:#7FA5BC;margin-top:15px;border-top:1px solid #24506B;padding-top:12px}
+@media(max-width:900px){.bands,.sc,.calc{grid-template-columns:1fr}.ex{grid-template-columns:repeat(2,1fr)}.out{border-left:none;border-top:1px solid #24506B;padding-left:0;padding-top:24px}}
+
+
+.break{display:flex;align-items:center;gap:18px;margin:44px 0 30px}
+.break .ln{flex:1;height:1px;background:#3E6E8C}
+.break .bt{font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:#C9A961;white-space:nowrap}
+.snow{border:1px solid #C9A961;background:rgba(201,169,97,.04);padding:30px 32px}
+.snow .tt{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px;margin-bottom:22px}
+.snow .t1{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#8FB4C9}
+.snow .t1 b{font-weight:500;color:#fff}
+.snow .t2{font-size:11px;color:#7FA5BC}
+.goalrow{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:22px}
+.goalrow label{font-size:14px;color:#B7D0DF}
+#goal{width:170px;height:52px;background:rgba(255,255,255,.08);border:1px solid #3E6E8C;color:#fff;font-family:inherit;font-size:24px;font-weight:300;text-align:center;font-variant-numeric:tabular-nums;-moz-appearance:textfield}
+#goal::-webkit-outer-spin-button,#goal::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+#goal:focus{outline:none;border-color:#C9A961}
+#goal::placeholder{color:#3E6E8C}
+.chartwrap{transition:opacity .5s ease}
+.snow.idle .chartwrap{opacity:0;pointer-events:none}
+.snow.idle .prompt{opacity:1;visibility:visible}
+@keyframes callIn{from{opacity:0;transform:var(--tf) scale(.94)}to{opacity:1;transform:var(--tf) scale(1)}}
+@keyframes lineIn{from{opacity:0}to{opacity:.85}}
+#goalline,.gmark{opacity:0;animation:lineIn .3s ease forwards}
+.glab{opacity:0;animation:lineIn .3s ease forwards}
+.prompt{position:absolute;inset:0;visibility:hidden;display:flex;align-items:center;justify-content:center;
+        font-size:15px;color:#4E7690;opacity:0;transition:opacity .4s ease;pointer-events:none;letter-spacing:.02em}
+#goalAns{font-size:clamp(16px,1.6vw,22px);color:#fff;font-weight:300}
+#goalAns b{color:#C9A961;font-weight:400}
+.yrs{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:#3E6E8C;border:1px solid #3E6E8C;margin-bottom:24px}
+.yr{background:#0C2B3E;padding:18px 22px}
+.yr .yl{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#8FB4C9}
+.yr .yn{font-size:clamp(26px,2.8vw,38px);font-weight:300;color:#C9A961;letter-spacing:-.03em;margin-top:7px;font-variant-numeric:tabular-nums}
+.yr .yu{font-size:12px;color:#B7D0DF;margin-top:5px}
+.chartwrap{position:relative}
+#chart{width:100%;height:340px;display:block}
+.ovl{position:absolute;inset:0;pointer-events:none}
+.ovl .ax{position:absolute;font-size:11px;color:#7FA5BC;transform:translateY(-50%);white-space:nowrap}
+.ovl .yrlab{position:absolute;font-size:12px;color:#7FA5BC;transform:translateX(-100%);white-space:nowrap}
+.ovl .glab{position:absolute;font-size:12px;color:#fff;transform:translate(-100%,-100%);white-space:nowrap;padding-bottom:6px}
+.call{position:absolute;background:#0B2436;border:1.5px solid #fff;padding:14px 18px;white-space:nowrap;
+      opacity:0;animation:callIn .34s cubic-bezier(.33,1,.68,1) forwards;
+      transition:left .35s cubic-bezier(.33,1,.68,1), top .35s cubic-bezier(.33,1,.68,1);}
+.call .cm{font-size:10px;letter-spacing:.18em;color:#8FB4C9;margin-bottom:8px}
+.call .cc{font-size:32px;font-weight:300;color:#C9A961;letter-spacing:-.02em;line-height:1;font-variant-numeric:tabular-nums}
+.call .cu{font-size:13px;color:#fff;margin-top:8px}
+#tip{position:absolute;display:none;background:#0B2436;border:1px solid #C9A961;padding:8px 12px;font-size:12px;color:#fff;pointer-events:none;white-space:nowrap;z-index:5}
+#tip b{color:#C9A961;font-weight:400}
+</style>
+
+<div class="wrap">
+  <div class="hd"><h1>Cashflow Calculator</h1><div class="mark">Vacarya Partnership</div></div>
+  <p class="method">Realized net cashflow across 400+ units, each with 12+ months of operating history. Below is what the partner keeps <b>after</b> rent, utilities, cleaning, <b>and</b> the Vacarya performance share. The share is 8% at 1 to 4 units, 7% at 5 to 9, and 6% at 10 and up.</p>
+
+  <div class="bands">
+    <div class="b"><div class="t">Conservative</div><div class="n">$746</div><div class="pm">per unit, per month</div><div class="q">Lower quartile of the portfolio</div></div>
+    <div class="b"><div class="t">Average</div><div class="n">$928</div><div class="pm">per unit, per month</div><div class="q">Median of the portfolio</div></div>
+    <div class="b"><div class="t">Strong</div><div class="n">$1,104</div><div class="pm">per unit, per month</div><div class="q">Upper quartile of the portfolio</div></div>
+  </div>
+
+  <div class="lbl" style="margin-top:26px">At the <b>average</b>, as you scale</div>
+  <div class="sc">
+    <div class="s"><div class="u">3 units &middot; 8% share</div><div class="n">$2,784</div><div class="f">per month &middot; $928 per unit</div></div>
+    <div class="s"><div class="u">5 units &middot; 7% share</div><div class="n">$4,820</div><div class="f">per month &middot; $964 per unit</div></div>
+    <div class="s"><div class="u">10 units &middot; 6% share</div><div class="n">$10,010</div><div class="f">per month &middot; $1,001 per unit</div></div>
+  </div>
+
+  <div class="lbl" style="margin-top:26px">Portfolio examples</div>
+  <div class="ex">
+    <a class="e" target="_blank" rel="noopener" href="https://www.airbnb.com/rooms/1187651325753130500"><div class="nm">Kansas City<br>Broadway</div><div class="a">$1,358</div><div class="pm">per month</div><div class="tag">Strong</div><br><span class="go">Listing<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></span></a>
+    <a class="e" target="_blank" rel="noopener" href="https://www.airbnb.com/rooms/1319935211128560655"><div class="nm">Philadelphia<br>Fairmount</div><div class="a">$1,120</div><div class="pm">per month</div><div class="tag">Strong</div><br><span class="go">Listing<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></span></a>
+    <a class="e" target="_blank" rel="noopener" href="https://www.airbnb.com/rooms/1218092002051262649"><div class="nm">Fuller Flats<br>Minneapolis</div><div class="a">$1,116</div><div class="pm">per month</div><div class="tag">Strong</div><br><span class="go">Listing<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></span></a>
+    <a class="e" target="_blank" rel="noopener" href="https://www.airbnb.com/rooms/1498351482817119599"><div class="nm">Altitude<br>Atlanta</div><div class="a">$959</div><div class="pm">per month</div><div class="tag">Average</div><br><span class="go">Listing<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></span></a>
+    <a class="e" target="_blank" rel="noopener" href="https://www.airbnb.com/rooms/1233322519113511733"><div class="nm">Dallas<br>Roseland</div><div class="a">$883</div><div class="pm">per month</div><div class="tag">Average</div><br><span class="go">Listing<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></span></a>
+    <a class="e" target="_blank" rel="noopener" href="https://www.airbnb.com/rooms/1298617061313254752"><div class="nm">Downtown<br>Dallas</div><div class="a">$781</div><div class="pm">per month</div><div class="tag">Conservative</div><br><span class="go">Listing<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></span></a>
+  </div>
+
+  <div class="calc">
+    <div>
+      <div class="q">How many units?</div>
+      <div class="row">
+        <button class="step" id="m" aria-label="Fewer">&minus;</button>
+        <input type="number" id="u" value="3" min="1" max="50" aria-label="Units">
+        <button class="step" id="p" aria-label="More">+</button>
+        <span class="ul" id="ul">units</span>
+      </div>
+      <div class="pills" role="group" aria-label="Band">
+        <button class="pill" data-k="lo" aria-pressed="false">Conservative</button>
+        <button class="pill" data-k="mid" aria-pressed="true">Average</button>
+        <button class="pill" data-k="hi" aria-pressed="false">Strong</button>
+      </div>
+    </div>
+    <div class="out">
+      <div class="big" id="n">$2,784</div>
+      <div class="pm">per month</div>
+      <div class="det" id="d">$928 per unit &middot; 8% performance share</div>
+    </div>
+  </div>
+
+</div>
+
+
+<div class="break"><div class="ln"></div><div class="bt">Projection &middot; if you reinvest</div><div class="ln"></div></div>
+<div class="snow">
+  <div class="tt">
+    <div class="t1"><b>The Snowball Effect</b> &middot; Cashflow Projection</div>
+    <div class="t2" id="snowSub"></div>
+  </div>
+  <div class="goalrow">
+    <label for="goal">Monthly cashflow goal</label>
+    <input type="number" id="goal" placeholder="0" step="500" min="0" aria-label="Monthly cashflow goal">
+    <span id="goalAns"></span>
+  </div>
+<div style="position:relative"><div class="prompt">Enter a monthly cashflow goal to run the projection</div>
+    <div class="chartwrap">
+    <svg id="chart" viewBox="0 0 1000 340" preserveAspectRatio="none" aria-label="Projected monthly cashflow if reinvested"></svg>
+    <div class="ovl" id="ovl"></div>
+    <div id="tip"></div>
+  </div></div>
+</div>
+<script>
+(function(){
+  var BANDS={lo:746,mid:928,hi:1104}, BUMP={8:0,7:36,6:73};
+  var k='mid', u=document.getElementById('u');
+  function rate(n){return n>=10?6:n>=5?7:8;}
+  function f(v){return '$'+Math.round(v).toLocaleString();}
+  function draw(){
+    var n=Math.max(1,Math.min(50,parseInt(u.value)||1));
+    var r=rate(n), per=BANDS[k]+BUMP[r];
+    tween(document.getElementById('n'),per*n,380,f);
+    document.getElementById('d').innerHTML=f(per)+' per unit &middot; '+r+'% performance share';
+    document.getElementById('ul').textContent=n===1?'unit':'units';
+  }
+  document.getElementById('p').onclick=function(){u.value=Math.min(50,(parseInt(u.value)||0)+1);draw();};
+  document.getElementById('m').onclick=function(){u.value=Math.max(1,(parseInt(u.value)||2)-1);draw();};
+  u.addEventListener('input',draw);
+  document.querySelectorAll('.pill').forEach(function(b){
+    b.onclick=function(){k=b.dataset.k;document.querySelectorAll('.pill').forEach(function(x){x.setAttribute('aria-pressed','false');});b.setAttribute('aria-pressed','true');draw();};
+  });
+
+  // ---- animation layer ----
+  var ANIMS={};
+  function tween(el,to,dur,fmt){
+    var id=el.id||Math.random(); if(ANIMS[id])cancelAnimationFrame(ANIMS[id]);
+    var txt=el.textContent.replace(/[^0-9]/g,''), from=parseInt(txt)||0;
+    if(from===to){el.textContent=fmt(to);return;}
+    var t0=null;
+    function step(ts){
+      if(!t0)t0=ts;
+      var q=Math.min(1,(ts-t0)/dur); q=1-Math.pow(1-q,3);
+      el.textContent=fmt(Math.round(from+(to-from)*q));
+      if(q<1)ANIMS[id]=requestAnimationFrame(step);
+    }
+    ANIMS[id]=requestAnimationFrame(step);
+  }
+  // ---- snowball projection v2 ----
+  var SETUP=12000, MONTHS=36, PREV=null, SHAPE='', GOALT=null;
+  var goal=document.getElementById('goal');
+  function sim(start,band){
+    var units=start,pot=0,rows=[];
+    for(var m=1;m<=MONTHS;m++){
+      var per=BANDS[band]+BUMP[rate(units)], cash=per*units;
+      pot+=cash; var added=0;
+      while(pot>=SETUP){pot-=SETUP;units++;added++;}
+      rows.push({m:m,units:units,cash:cash,added:added});
+    }
+    return rows;
+  }
+  function fmtK(v){return v>=1000?'$'+Math.round(v/1000)+'K':'$'+v;}
+  function drawSnow(){
+    var n=Math.max(1,Math.min(50,parseInt(u.value)||1));
+    var shapeKey=n+'|'+k+'|'+(goal.value.trim()===''?'off':'on'), shapeChanged=(shapeKey!==SHAPE); SHAPE=shapeKey;
+    var rows=sim(n,k), names={lo:'conservative',mid:'average',hi:'strong'};
+    document.getElementById('snowSub').textContent=n+(n===1?' unit':' units')+' \u00b7 '+names[k]+' band';
+        // goal answer
+    var raw=goal.value.trim(), g=(raw===''?0:Math.max(0,parseInt(raw)||0)), hit=null, ans=document.getElementById('goalAns');
+    document.querySelector('.snow').classList.toggle('idle', g<=0);
+    for(var i=0;i<rows.length;i++){if(rows[i].cash>=g){hit=i+1;break;}}
+    var base=rows[0].cash;
+    if(g<=0){ans.innerHTML='';}
+    else if(base>=g){ans.innerHTML='At this band, '+n+(n===1?' unit':' units')+' already clear this figure.';}
+    else if(hit){ans.innerHTML=f(g)+'/mo is reached around <b>month '+hit+'</b> in this illustration.';}
+    else{ans.innerHTML='Not reached within 3 years in this illustration.';}
+    // chart
+    var ov='', callHTML='';
+    var svg=document.getElementById('chart'), W=1000,H=340,L=56,R=10,T=14,B=30;
+    var max=Math.max(rows[MONTHS-1].cash, g>0?g*1.05:0);
+    function X(i){return L+(W-L-R)*i/(MONTHS-1);}
+    function Y(v){return H-B-(H-T-B)*(v/max);}
+    var pts=rows.map(function(r,i){return [X(i),Y(r.cash)];});
+    var d='M'+pts[0][0]+','+pts[0][1];
+    for(var i=1;i<pts.length;i++){d+=' L'+pts[i][0]+','+pts[i-1][1]+' L'+pts[i][0]+','+pts[i][1];}
+    var area=d+' L'+pts[pts.length-1][0]+','+(H-B)+' L'+pts[0][0]+','+(H-B)+' Z';
+    // gridlines: 4 dollar levels
+    var grid='';
+    for(var gi=1;gi<=4;gi++){
+      var gv=max*gi/4, gy=Y(gv);
+      grid+='<line x1="'+L+'" y1="'+gy+'" x2="'+(W-R)+'" y2="'+gy+'" stroke="#1B4761" stroke-width="1"/>';
+      ov+='<div class="ax" style="left:0;top:'+(gy/H*100)+'%">'+fmtK(gv)+'</div>';
+    }
+    // year lines
+    var yl=[12,24,36].map(function(m,i){var x=X(m-1);
+      ov+='<div class="yrlab" style="left:'+(x/W*100)+'%;top:'+((H-18)/H*100)+'%">Year '+(i+1)+'</div>';
+      return '<line x1="'+x+'" y1="'+T+'" x2="'+x+'" y2="'+(H-B)+'" stroke="#24506B" stroke-width="1"/>';}).join('');
+    // unit-add markers
+    var marks=rows.map(function(r,i){return r.added?'<circle cx="'+X(i)+'" cy="'+Y(r.cash)+'" r="3.5" fill="#C9A961"/>':'';}).join('');
+    // goal line
+    var gl='';
+    if(g>0&&g<=max){
+      var gy2=Y(g);
+      gl='<line id="goalline" x1="'+L+'" y1="'+gy2+'" x2="'+(W-R)+'" y2="'+gy2+'" stroke="#fff" stroke-width="1.5" stroke-dasharray="6 5" style="animation-delay:'+(shapeChanged?420:0)+'ms"/>';
+      ov+='<div class="glab" style="left:100%;top:'+(gy2/H*100)+'%;animation-delay:'+(shapeChanged?420:0)+'ms">Goal '+fmtK(g)+'</div>';
+      if(hit){var hx=X(hit-1), hy=Y(rows[hit-1].cash);
+        gl+='<circle cx="'+hx+'" cy="'+hy+'" r="7" fill="#0B2436" stroke="#fff" stroke-width="2.5" class="gmark" style="animation-delay:'+(shapeChanged?470:0)+'ms"/>';
+        var flip=hx>W*0.58;
+        var tf='translate('+(flip?'calc(-100% - 22px)':'22px')+',calc(-100% - 22px))';
+        callHTML='<div class="call" style="left:'+(hx/W*100)+'%;top:'+(hy/H*100)+'%;--tf:'+tf+';transform:'+tf+';animation-delay:'+(shapeChanged?560:120)+'ms">'
+          +'<div class="cm">MONTH '+hit+'</div>'
+          +'<div class="cc">'+f(rows[hit-1].cash)+'</div>'
+          +'<div class="cu">per month \u00b7 '+rows[hit-1].units+' units</div></div>';
+      }
+    }
+    var firstDraw=!PREV;
+    svg.innerHTML=grid+yl
+      +'<path d="'+area+'" fill="rgba(201,169,97,.12)"/>'
+      +'<path id="stair" d="'+d+'" fill="none" stroke="#C9A961" stroke-width="2.5"/>'
+      +marks+gl;
+    var st=document.getElementById('stair');
+    if(st&&shapeChanged){var len=st.getTotalLength();
+      st.style.strokeDasharray=len; st.style.strokeDashoffset=len;
+      st.getBoundingClientRect();
+      st.style.transition='stroke-dashoffset .62s cubic-bezier(.33,1,.68,1)';
+      st.style.strokeDashoffset=0;}
+    document.getElementById('ovl').innerHTML=ov+callHTML;
+    PREV=rows;
+  }
+  // hover tooltip
+  (function(){
+    var svg=document.getElementById('chart'), tip=document.getElementById('tip'), wrap=svg.parentElement;
+    svg.addEventListener('mousemove',function(ev){
+      if(!PREV)return;
+      var r=svg.getBoundingClientRect(), L=56,R=10;
+      var fx=(ev.clientX-r.left)/r.width*1000;
+      var i=Math.round((fx-L)/(1000-L-R)*(MONTHS-1));
+      if(i<0||i>=MONTHS){tip.style.display='none';return;}
+      var row=PREV[i];
+      tip.innerHTML='Month '+row.m+' \u00b7 <b>'+f(row.cash)+'/mo</b> \u00b7 '+row.units+' units';
+      tip.style.display='block';
+      var wr=wrap.getBoundingClientRect();
+      var tx=ev.clientX-wr.left+14, ty=ev.clientY-wr.top-34;
+      if(tx+tip.offsetWidth>wr.width) tx-=tip.offsetWidth+28;
+      tip.style.left=tx+'px'; tip.style.top=ty+'px';
+    });
+    svg.addEventListener('mouseleave',function(){tip.style.display='none';});
+  })();
+  goal.addEventListener('input',function(){clearTimeout(GOALT);GOALT=setTimeout(drawSnow,180);});
+  u.addEventListener('input',drawSnow);
+  document.getElementById('p').addEventListener('click',drawSnow);
+  document.getElementById('m').addEventListener('click',drawSnow);
+  var _draw=draw;
+  draw=function(){_draw();drawSnow();};
+  draw();
+})();
+</script>
